@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "durable-functions": "^1.2.0",
+    "request": "^2.88.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {},

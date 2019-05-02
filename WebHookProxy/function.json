@@ -1,0 +1,9 @@
+{
+  "bindings": [
+    {
+      "name": "azureFunctionUrl",
+      "type": "activityTrigger",
+      "direction": "in"
+    }
+  ]
+}

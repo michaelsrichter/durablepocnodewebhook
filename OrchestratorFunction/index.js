@@ -1,11 +1,18 @@
 const df = require("durable-functions");
 
-module.exports = df.orchestrator(function*(context){
-    context.log("Starting chain sample");
-    const output = [];
-    output.push(yield context.df.callActivity("E1_SayHello", "Tokyo"));
-    output.push(yield context.df.callActivity("E1_SayHello", "Seattle"));
-    output.push(yield context.df.callActivity("E1_SayHello", "London"));
+module.exports = df.orchestrator(function* (context) {
 
-    return output;
+    var input = context.df.getInput();
+
+    const tasks = [];
+
+    for (i in input.functions) {
+        tasks.push(context.df.callActivity("WebHookProxy", input.functions[i]));
+    }
+    const results = yield context.df.Task.all(tasks);
+
+
+    var save = { uri: input.testEndpoint, method: "POST", body: results };
+    var savedResults = yield context.df.callActivity("SaveResults", save);
+    return results;
 });
